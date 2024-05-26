@@ -4,9 +4,9 @@ using namespace std;
 // definicao de tipo
 struct NO {
 	int valor;
+	int altura; // usada para balanceamento
 	NO* esq;
 	NO* dir;
-	int altura; // usada para balanceamento
 };
 
 NO* raiz = NULL;
@@ -121,9 +121,9 @@ NO* criaNO(int valor)
 		return NULL;
 	}
 	novo->valor = valor;
+	novo->altura = 0;
 	novo->esq = NULL;
 	novo->dir = NULL;
-	novo->altura = 0;
 	return novo;
 }
 
@@ -206,12 +206,31 @@ NO* insereArvore(NO* no, int valor)
 
 NO* girarDireita(NO* no)
 {
+	NO* aux;
+
+	aux = no->esq;
+	no->esq =	aux->dir;
+	aux->dir = no;
+
+	no->altura = max(alturaNo(no->esq), alturaNo(no->dir)) + 1;
+	aux->altura = max(alturaNo(aux->esq), alturaNo(no->dir)) + 1;
+	no = aux;
 	// sua implementação vai aqui
 	return no;
 }
 
 NO* girarEsquerda(NO* no)
 {
+	NO* aux;
+
+	aux = no->dir;
+	no->dir = aux->esq;
+	aux->esq = no;
+
+	no->altura = max(alturaNo(no->esq), alturaNo(no->dir)) + 1;
+	aux->altura	= max(alturaNo(aux->dir), alturaNo(no)) + 1;
+
+	no = aux;
 	// sua implementação vai aqui
 	return no;
 }
